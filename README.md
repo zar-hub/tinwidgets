@@ -19,6 +19,7 @@ To install TinWidgets, you can clone the repository:
 git clone https://github.com/zar-hub/tinwidgets.git
 ```
 
+
 ### Usage
 
 Include the provided CSS and HTML in your project to start using TinWidgets. Customize the styles as needed to fit your design.
