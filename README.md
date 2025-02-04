@@ -1,6 +1,7 @@
-<div align="center">
-		<img src="media/header.svg" width="800" height="400">
+<div style="margin: 0px">
+		<img src="media/header.svg" />
 </div>
+
 TinWidgets is a project focused on creating customizable and animated widgets for web applications. The widgets are designed to be visually appealing and easy to integrate into any web project.
 
 ### Features
