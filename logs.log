@@ -1,0 +1,59 @@
+00:54:40,115 root INFO Running Urban Planning
+00:54:40,115 urbanGUI INFO thest
+00:54:40,115 urbanGUI WARNING warning
+00:54:42,92 root INFO Running Urban Planning
+00:54:42,92 urbanGUI INFO thest
+00:54:42,92 urbanGUI WARNING warning
+00:55:27,794 root INFO Running Urban Planning
+00:55:27,794 urbanGUI INFO thest
+00:55:27,794 urbanGUI WARNING warning
+00:55:29,285 root INFO Running Urban Planning
+00:55:29,285 urbanGUI INFO thest
+00:55:29,285 urbanGUI WARNING warning
+00:55:30,156 root INFO Running Urban Planning
+00:55:30,156 urbanGUI INFO thest
+00:55:30,156 urbanGUI WARNING warning
+00:55:31,797 root INFO Running Urban Planning
+00:55:31,797 urbanGUI INFO thest
+00:55:31,797 urbanGUI WARNING warning
+00:55:41,67 root INFO Running Urban Planning
+00:55:41,84 urbanGUI INFO thest
+00:55:41,84 urbanGUI WARNING warning
+00:55:42,629 root INFO Running Urban Planning
+00:55:42,629 urbanGUI INFO thest
+00:55:42,629 urbanGUI WARNING warning
+08:26:27,641 root INFO Running Urban Planning
+08:26:27,641 urbanGUI INFO thest
+08:26:27,641 urbanGUI WARNING warning
+08:26:32,937 root INFO Running Urban Planning
+08:26:32,937 urbanGUI INFO thest
+08:26:32,937 urbanGUI WARNING warning
+08:26:41,397 root INFO Running Urban Planning
+08:26:41,397 urbanGUI INFO thest
+08:26:41,397 urbanGUI WARNING warning
+08:27:00,801 root INFO Running Urban Planning
+08:27:00,801 urbanGUI INFO thest
+08:27:00,801 urbanGUI WARNING warning
+08:27:10,968 root INFO Running Urban Planning
+08:27:10,970 urbanGUI INFO thest
+08:27:10,970 urbanGUI WARNING warning
+08:27:33,166 root INFO Running Urban Planning
+08:27:33,167 tinwidgets INFO thest
+08:27:33,167 tinwidgets WARNING warning
+08:39:40,876 __main__ INFO Starting program
+08:39:40,877 __main__ INFO About to try something dangerous...
+08:39:40,878 __main__ ERROR An error occurred!
+Traceback (most recent call last):
+  File "C:\Users\alber\AppData\Local\Temp\ipykernel_11156\50175785.py", line 6, in <module>
+    1.0/0.0
+    ~~~^~~~
+ZeroDivisionError: float division by zero
+08:40:56,868 __main__ INFO Starting program
+08:40:56,868 __main__ INFO About to try something dangerous...
+08:40:56,869 __main__ ERROR An error occurred!
+Traceback (most recent call last):
+  File "C:\Users\alber\AppData\Local\Temp\ipykernel_11156\50175785.py", line 6, in <module>
+    1.0/0.0
+    ~~~^~~~
+ZeroDivisionError: float division by zero
+08:40:56,901 Comm DEBUG handle_msg[f58813ae4b4a4d1c9fea9f3a8da2ac2f]({'header': {'date': datetime.datetime(2025, 1, 2, 7, 40, 56, 898000, tzinfo=tzutc()), 'msg_id': '83ea51ef-d1e0-46e1-8765-746db715c9a2', 'msg_type': 'comm_msg', 'session': '99a12c2a-f1d7-4193-9a32-0814d861f1b1', 'username': 'b87c29ac-d089-49f2-8fae-c991368ca350', 'version': '5.2'}, 'msg_id': '83ea51ef-d1e0-46e1-8765-746db715c9a2', 'msg_type': 'comm_msg', 'parent_header': {}, 'metadata': {}, 'content': {'comm_id': 'f58813ae4b4a4d1c9fea9f3a8da2ac2f', 'data': {'method': 'update', 'state': {'outputs': []}, 'buffer_paths': []}}, 'buffers': []})
