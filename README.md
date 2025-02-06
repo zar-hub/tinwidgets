@@ -5,11 +5,8 @@
 TinWidgets is a project focused on creating customizable and animated widgets for web applications. The widgets are designed to be visually appealing and easy to integrate into any web project.
 
 ### Features
-
-- Customizable gears animation
-- Multiple font styles
-- Responsive design
-- Easy to integrate
+- Interactive Matplotlib graphs
+- Widgets support
 
 ### Installation
 
@@ -36,15 +33,13 @@ or to use the output widget that comes with the library executing this command i
 ```python
 tinw.widget_handler.show_logs()
 ```
-
+### Dev
+**Widget traitlets** traitlets are a Python framework for eventful variables interaction.
+The basic concept is that a traitlet can be *observed*, and it's update triggers some callback function.
+The python widget system uses this traitlets feature to handle the state, usually the traitlets of the widgets are called `variable` (duh).
+There are some utilities in the [traitlet docs](https://www.google.com/search?client=firefox-b-d&q=zen+copy+url+shortcuop)
+which are used to **link** two different traitles. 
 
 ### License
 
 This project is licensed under the MIT License.
-
-### Contact
-
-For any questions or suggestions, please open an issue or contact the project maintainer at your.email@example.com.
-
-
-

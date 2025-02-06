@@ -17,7 +17,7 @@
 				height: 2em;
 				top: 52%;
 				left: 51%;
-				background:rgb(235, 245, 96);
+				background:#E9E581;
 				position: absolute;
 				border-radius: 1em;
 				z-index: 1;

@@ -21,10 +21,11 @@ from matplotlib.patches import Rectangle
 from matplotlib.lines import Line2D
 from matplotlib.artist import Artist
 import numpy as np
-import update_handlers as uph
+import update_handlers as upd_hand
 import logging.handlers
 import logging
-from loggerwidget import OutputWidgetHandler
+from components.loggerwidget import OutputWidgetHandler
+import ipywidgets as widgets
 
 # ___ MODULE STATE ___
 bg, fig, ax = None, None, None
@@ -211,6 +212,12 @@ def on_release(event):
     # and this is the last thing that should be done.
     on_pick.current = None
     on_release.style = {}
+    
+    # Update the widget linked to the artist
+    # if there is one.
+    if id(art) in widget_links:
+        widget_links[id(art)].value = art.get_xy()[0]
+    
     logger.debug('Released artist %s id:%s', type(art), id(art))
     
 def on_draw(event):
@@ -221,6 +228,18 @@ def on_draw(event):
     # when NOT in interactive mode.
     global bg 
     bg = None
+    
+# __ HELPER FUNCTIONS __
+def link_to_widget(artist : Artist, widget : widgets.Widget):
+    ''' 
+    Links an artist to a widget.
+    The artist is identified by its id.
+    '''
+    def on_value_change(change):
+        artist.set_xy([change.new, artist.get_xy()[1]])
+    widget_links[id(artist)] = widget
+    widget.observe(on_value_change, names='value')
+    
     
 # __ PREPARE ENVIRONMENT __
 # Set up the logger
@@ -250,8 +269,8 @@ on_move.last = (None, None)
 on_move.skip_frames = SKIP_FRAMES
 # Dragging behaviours
 on_move.behaviours = {
-    Rectangle : uph.update_Rectangle,
-    Line2D : uph.update_Line2D
+    Rectangle : upd_hand.update_Rectangle,
+    Line2D : upd_hand.update_Line2D
 }
 on_pick.styles = {
     Rectangle : {
@@ -265,7 +284,16 @@ on_pick.styles = {
 # This is used internally to save the style
 # the artist prior to picking
 on_pick.current = None
+# This should not be setted by the dev, it loads
+# the style of the artist when it is picked so 
+# it can be restored when it is released.
 on_release.style = {}
+
+# Widget state synchandlers
+# Each object handled by the library has
+# an unique id, and we can use that id
+# to display the state of the obj in a widget
+widget_links = {}
 
 if __name__ == '__main__':
     logger.info('Starting main')
