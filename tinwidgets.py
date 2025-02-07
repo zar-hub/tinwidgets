@@ -215,8 +215,11 @@ def on_release(event):
     
     # Update the widget linked to the artist
     # if there is one.
-    if id(art) in widget_links:
-        widget_links[id(art)].value = art.get_xy()[0]
+    if id(art) in widget_handlers:
+        logger.debug('Updating widget linked to artist %s', id(art))
+        for widget_handler in widget_handlers[id(art)]:
+            widget_handler()
+    
     
     logger.debug('Released artist %s id:%s', type(art), id(art))
     
@@ -230,16 +233,24 @@ def on_draw(event):
     bg = None
     
 # __ HELPER FUNCTIONS __
-def link_to_widget(artist : Artist, widget : widgets.Widget):
+def attach_widget_handler(artist : Artist, widget : widgets.Widget,  widget_handler : callable):
     ''' 
-    Links an artist to a widget.
-    The artist is identified by its id.
+    Adds a widget handler to the artist using id as key.
+    To keep things simple a function is created with all the
+    necessary info to update the widget, so only a list 
+    of functions (handlers) is needed to update all the widgets 
+    linked to an artist id.
+    Handlers are called when artist is released
     '''
-    def on_value_change(change):
-        artist.set_xy([change.new, artist.get_xy()[1]])
-    widget_links[id(artist)] = widget
-    widget.observe(on_value_change, names='value')
-    
+    # Links are a list of widgets connected to the artist id
+    # if the list is not present it is created.
+    if widget_handlers.get(id(artist)) is None:
+        widget_handlers[id(artist)] = []
+        
+    def this_artist_handler():
+        return widget_handler(artist, widget)  
+
+    widget_handlers[id(artist)].append(this_artist_handler)
     
 # __ PREPARE ENVIRONMENT __
 # Set up the logger
@@ -293,7 +304,7 @@ on_release.style = {}
 # Each object handled by the library has
 # an unique id, and we can use that id
 # to display the state of the obj in a widget
-widget_links = {}
+widget_handlers = {}
 
 if __name__ == '__main__':
     logger.info('Starting main')
