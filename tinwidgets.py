@@ -233,7 +233,7 @@ def on_draw(event):
     bg = None
     
 # __ HELPER FUNCTIONS __
-def attach_widget_handler(artist : Artist, widget : widgets.Widget,  widget_handler : callable):
+def attach_handler(artist : Artist, widget_handler : callable):
     ''' 
     Adds a widget handler to the artist using id as key.
     To keep things simple a function is created with all the
@@ -242,15 +242,38 @@ def attach_widget_handler(artist : Artist, widget : widgets.Widget,  widget_hand
     linked to an artist id.
     Handlers are called when artist is released
     '''
-    # Links are a list of widgets connected to the artist id
-    # if the list is not present it is created.
+    # Create a list of handlers if it does not exist
     if widget_handlers.get(id(artist)) is None:
-        widget_handlers[id(artist)] = []
-        
-    def this_artist_handler():
-        return widget_handler(artist, widget)  
+        widget_handlers[id(artist)] = []  
 
-    widget_handlers[id(artist)].append(this_artist_handler)
+    widget_handlers[id(artist)].append(widget_handler)
+
+def attach_property(artist : Artist, prop : str, widget : widgets.Widget):
+    ''' 
+    Attaches a widget to a property of an artist.
+    The widget is updated when the property is changed.
+    '''
+    try :
+        artist.properties()[prop]
+    except KeyError as e:
+        msg = 'Property {} is not supported for {}'.format(e, type(artist))
+        logger.error(msg)
+        raise KeyError(msg)
+    
+    # Widget change --> artist change
+    widget.value = artist.properties()[prop]
+    def update_art(change):
+        new_val = change['new']
+        artist.set(**{prop : new_val})
+        
+    widget.observe(lambda change : update_art(change), names = 'value')
+
+    # artyist change --> widget change
+    def update_widget():
+        widget.value = artist.properties()[prop]
+
+    attach_handler(artist, update_widget)
+
     
 # __ PREPARE ENVIRONMENT __
 # Set up the logger
@@ -305,6 +328,7 @@ on_release.style = {}
 # an unique id, and we can use that id
 # to display the state of the obj in a widget
 widget_handlers = {}
+
 
 if __name__ == '__main__':
     logger.info('Starting main')

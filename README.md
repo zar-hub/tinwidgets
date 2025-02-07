@@ -16,6 +16,11 @@ To install TinWidgets, you can clone the repository:
 git clone https://github.com/zar-hub/tinwidgets.git
 ```
 
+and install the requirements
+
+```bash
+pip install -r requirements.txt
+```
 
 ### Usage
 
