@@ -8,6 +8,33 @@ TinWidgets is a project focused on creating customizable and animated widgets fo
 - Interactive Matplotlib graphs
 - Widgets support
 
+### How to use it
+Just import the library with:
+```python
+import tinwidgets as tinw
+```
+and open an interactive canvas
+```python
+fig, ax = tinw.subplots()
+```
+and to make an **Artist** interactive just
+set it's picker property to some value
+```pyhton
+rect = Rectangle([1, 1], 2, 5)
+rect.set_picker(5)
+```
+you can also link one of it's properties to a widget *value* like this:
+```pyhton
+from ipywidgets import FloatSlider 
+slider = FloatSlider(
+    value=7,
+    min=0,
+    max=5,
+    step=.1,)
+tinw.attach_property(rect, 'x', slider)
+```
+And now you are good to go!
+
 ### Installation
 
 To install TinWidgets, you can clone the repository:

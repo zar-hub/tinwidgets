@@ -216,7 +216,7 @@ def on_release(event):
     # Update the widget linked to the artist
     # if there is one.
     if id(art) in widget_handlers:
-        logger.debug('Updating widget linked to artist %s', id(art))
+        logger.debug('Updating widgets linked to artist %s', id(art))
         for widget_handler in widget_handlers[id(art)]:
             widget_handler()
     
@@ -248,7 +248,7 @@ def attach_handler(artist : Artist, widget_handler : callable):
 
     widget_handlers[id(artist)].append(widget_handler)
 
-def attach_property(artist : Artist, prop : str, widget : widgets.Widget):
+def link_property(artist : Artist, prop : str, widget : widgets.Widget):
     ''' 
     Attaches a widget to a property of an artist.
     The widget is updated when the property is changed.
@@ -268,12 +268,34 @@ def attach_property(artist : Artist, prop : str, widget : widgets.Widget):
         
     widget.observe(lambda change : update_art(change), names = 'value')
 
-    # artyist change --> widget change
+    # artist change --> widget change
     def update_widget():
+        logger.debug('Updating prop widget %s', id(widget))
         widget.value = artist.properties()[prop]
 
     attach_handler(artist, update_widget)
-
+    
+def attach_output(artist : Artist, widget : widgets.Output):
+    ''' 
+    Displays the Artist properties in a widget.
+    The diplay properties are listed 
+    in the display_output.styles dict.
+    '''
+    try:
+        display_props = attach_output.styles[type(artist)]
+    except KeyError as e:
+        msg = 'Display properties for {} are not supported'.format(e)
+        logger.error(msg)
+        raise KeyError(msg)
+    
+    def handle_output():
+        logger.debug('Updating out widget %s', id(widget))
+        for prop, propname in display_props.items():
+            widget.append_stdout('{} : {}\n'.format(propname, artist.properties()[prop]))   
+    
+    attach_handler(artist, handle_output) 
+    
+    
     
 # __ PREPARE ENVIRONMENT __
 # Set up the logger
@@ -314,6 +336,15 @@ on_pick.styles = {
     Line2D : {
         'linewidth' : 2
         },
+}
+attach_output.styles = {
+    # name propname
+    Rectangle : {
+        'x' : 'x',
+        'y' : 'y',
+        'width' : 'width',
+        'height' : 'height', 
+    }
 }
 # This is used internally to save the style
 # the artist prior to picking

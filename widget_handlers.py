@@ -18,9 +18,3 @@ def handle_output(artist : Artist, widget : Widget):
     with widget:
         if type(artist) is Rectangle:
             print(f"Position {artist.get_xy()}, width {artist.get_width()}, height {artist.get_height()}")
-            
-def handle_synch(artist : Artist, widget : Widget):
-    '''
-    This handler is intended to be used with the Synch widget.
-    It will update the artist with the values from the widget.
-    '''
