@@ -26,6 +26,7 @@ import logging.handlers
 import logging
 from components.loggerwidget import OutputWidgetHandler
 import ipywidgets as widgets
+from matplotlib.transforms import Affine2D
 
 # ___ MODULE STATE ___
 bg, fig, ax = None, None, None
@@ -248,7 +249,7 @@ def attach_handler(artist : Artist, widget_handler : callable):
 
     widget_handlers[id(artist)].append(widget_handler)
 
-def link_property(artist : Artist, prop : str, widget : widgets.Widget):
+def link_property(widget : widgets.Widget, artist : Artist, prop : str):
     ''' 
     Attaches a widget to a property of an artist.
     The widget is updated when the property is changed.
@@ -261,7 +262,6 @@ def link_property(artist : Artist, prop : str, widget : widgets.Widget):
         raise KeyError(msg)
     
     # Widget change --> artist change
-    widget.value = artist.properties()[prop]
     def update_art(change):
         new_val = change['new']
         artist.set(**{prop : new_val})
@@ -274,6 +274,51 @@ def link_property(artist : Artist, prop : str, widget : widgets.Widget):
         widget.value = artist.properties()[prop]
 
     attach_handler(artist, update_widget)
+    update_widget()
+
+def link_transform(widget : widgets.Widget, artist : Artist, transform : str):
+    ''' 
+    Attaches a widget to a transformation of an artist.
+    The widget is updated when the transformation is changed.
+    Transform is a 3x3 mask of the transformation.
+
+    Properties:
+        sx : x scaling
+        sy : y scaling
+        tx : x translation
+        ty : y translation
+    '''
+
+    # Transformations mask
+    masks = {
+        'sx' : (0,0),
+        'sy' : (1,1),
+        'tx' : (0,2),
+        'ty' : (1,2),
+    }
+
+    if not transform in masks:
+        raise KeyError('Transform {} is not supported'.format(transform))
+
+    # get the transformer
+    ax_trans = artist.axes.transData
+    inv = ax_trans.inverted()
+
+    # Widget change --> artist change
+    def update_art(change):
+        new_val = change['new']
+        
+        
+    widget.observe(lambda change : update_art(change), names = 'value')
+
+    # artist change --> widget change
+    def update_widget():
+        logger.debug('Updating transform widget %s', id(widget))
+        pos = inv.get_matrix() @ artist.get_transform().get_matrix() 
+        widget.value = pos[masks[transform]]
+
+    attach_handler(artist, update_widget)
+    update_widget()
     
 def attach_output(artist : Artist, widget : widgets.Output):
     ''' 

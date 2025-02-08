@@ -17,6 +17,12 @@ and open an interactive canvas
 ```python
 fig, ax = tinw.subplots()
 ```
+an alternative is to use:
+```python 
+with plt.ioff():
+	fig, ax = plt.subplots()
+```
+the difference is that `with plt.ioff()` the canvas (or figure) is not drawn unless stated explicitly, see [the reference](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.isinteractive.html#matplotlib.pyplot.isinteractive) for more details.
 and to make an **Artist** interactive just
 set it's picker property to some value
 ```pyhton
@@ -60,6 +66,10 @@ The library comes with a logger, there are two ways to get the logger messages:
 read from the ```debug.log``` file with the following command:
 ```bash
 tail -f debug.log
+```
+or windows
+```bash
+Get-Content debug.log -Wait -Tail 30
 ```
 or to use the output widget that comes with the library executing this command in a cell:
 ```python
