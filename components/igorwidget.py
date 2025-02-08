@@ -47,7 +47,7 @@ class WavePanel():
         self.reset_button = Button(description='Reset', layout=Layout(width='90%'))
         self.title = HTML(value=f'<h3 style="margin:0;padding:0;">{title}</h3>', layout=Layout(width='90%'))
         self.words = ['x-offset', 'y-offset', 'x-scale', 'y-scale']
-        self.items = [FloatSlider(description=word, layout=items_layout) for word in self.words]
+        self.items = [FloatSlider(description=word, layout=items_layout, min = 0, max = 10) for word in self.words]
         self.items = [self.title] + self.items
         self.items.append(self.reset_button)
         self.container = Box(children=self.items, layout=container_layout)

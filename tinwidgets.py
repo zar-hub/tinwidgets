@@ -58,7 +58,6 @@ def update_bg():
 
 def on_pick(event):
     art : Artist = event.artist
-    
     # If an artist is already picked 
     # just drop out
     if not on_pick.current is None:
@@ -300,22 +299,23 @@ def link_transform(widget : widgets.Widget, artist : Artist, transform : str):
     if not transform in masks:
         raise KeyError('Transform {} is not supported'.format(transform))
 
-    # get the transformer
-    ax_trans = artist.axes.transData
-    inv = ax_trans.inverted()
-
     # Widget change --> artist change
     def update_art(change):
         new_val = change['new']
-        
-        
-    widget.observe(lambda change : update_art(change), names = 'value')
+        trans = artist.axes.transData
+        inv = trans.inverted()
+        matrix = inv.get_matrix() @ artist.get_transform().get_matrix()
+        matrix[masks[transform]] = new_val
+        matrix = trans.get_matrix() @ matrix
+        artist.set_transform(Affine2D(matrix))
 
+    widget.observe(lambda change : update_art(change), names = 'value')
     # artist change --> widget change
     def update_widget():
         logger.debug('Updating transform widget %s', id(widget))
-        pos = inv.get_matrix() @ artist.get_transform().get_matrix() 
-        widget.value = pos[masks[transform]]
+        inv = artist.axes.transData.inverted()
+        matrix = inv.get_matrix() @ artist.get_transform().get_matrix()
+        widget.value = matrix[masks[transform]]
 
     attach_handler(artist, update_widget)
     update_widget()
